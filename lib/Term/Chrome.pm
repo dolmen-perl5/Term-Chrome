@@ -1,21 +1,21 @@
 use strict;
 use warnings;
 
-package AngelPS1::Chrome;
+package Term::Chrome;
 
 # Pre-declare packages
 {
     package # no index: private package
-        AngelPS1::Chrome::Color;
+        Term::Chrome::Color;
 }
 
 use Carp ();
 
 our @CARP_NOT = qw<
-    AngelPS1::Chrome::Color
+    Term::Chrome::Color
 >;
 
-# Private constructor for AngelPS1::Chrome objects. Lexical, so cross-packages.
+# Private constructor for Term::Chrome objects. Lexical, so cross-packages.
 # Arguments:
 # - class name
 # - foreground color
@@ -44,9 +44,8 @@ sub color ($)
 {
     my $color = shift;
     die "invalid color" if ref $color;
-    #return $Chrome->(AngelPS1::Chrome::Color::, $color, undef);
     $COLOR_CACHE{chr($color)} ||=
-        $Chrome->(AngelPS1::Chrome::Color::, $color, undef);
+        $Chrome->(Term::Chrome::Color::, $color, undef);
 }
 
 
@@ -56,14 +55,14 @@ use Exporter 5.57 'import';  # perl 5.8.3
 #BEGIN { our @EXPORT_OK = ('color'); }
 
 {
-    my $mk_flag = sub { $Chrome->(AngelPS1::Chrome::, undef, undef, $_[0]) };
+    my $mk_flag = sub { $Chrome->(__PACKAGE__, undef, undef, $_[0]) };
 
     # This is a method
     sub flags
     {
         my $self = shift;
         return undef unless $#$self >= 2;
-        $Chrome->(AngelPS1::Chrome::, undef, undef, @{$self}[2..$#$self])
+        $Chrome->(__PACKAGE__, undef, undef, @{$self}[2..$#$self])
     }
 
     my %const = (
@@ -164,9 +163,9 @@ sub bg
 }
 
 package # no index: private package
-    AngelPS1::Chrome::Color;
+    Term::Chrome::Color;
 
-our @ISA = (AngelPS1::Chrome::);
+our @ISA = (Term::Chrome::);
 
 use overload
     '/'   => 'over',
@@ -175,17 +174,17 @@ use overload
         $^V ge v5.18.0
         ? ()
         : (
-            '""'  => \&AngelPS1::Chrome::term,
-            '+'   => \&AngelPS1::Chrome::plus,
-            '${}' => \&AngelPS1::Chrome::deref,
+            '""'  => \&Term::Chrome::term,
+            '+'   => \&Term::Chrome::plus,
+            '${}' => \&Term::Chrome::deref,
         )
     ),
 ;
 
 sub over
 {
-    die 'invalid bg color for /' unless ref($_[1]) eq AngelPS1::Chrome::Color::;
-    $Chrome->(AngelPS1::Chrome::, $_[0]->[0], $_[1]->[0])
+    die 'invalid bg color for /' unless ref($_[1]) eq __PACKAGE__;
+    $Chrome->(Term::Chrome::, $_[0]->[0], $_[1]->[0])
 }
 
 1;
@@ -193,11 +192,11 @@ __END__
 
 =head1 NAME
 
-AngelPS1::Chrome - DSL for colors and other terminal chrome
+Term::Chrome - DSL for colors and other terminal chrome
 
 =head1 SYNOPSIS
 
-    use AngelPS1::Chrome qw<Red Blue Bold Reset color>;
+    use Term::Chrome qw<Red Blue Bold Reset color>;
 
     # Base color constant and attribute
     say Red, 'red text', Reset;
@@ -219,7 +218,7 @@ AngelPS1::Chrome - DSL for colors and other terminal chrome
 
 =head1 DESCRIPTION
 
-C<AngelPS1::Chrome> is a domain-specific language (DSL) for terminal decoration
+C<Term::Chrome> is a domain-specific language (DSL) for terminal decoration
 (colors and other attributes).
 
 In the current implementation stringification to ANSI sequences for C<xterm>
@@ -235,7 +234,7 @@ arithmetic operators.
 
 C<color(I<0-255>)>
 
-Build a L<AngelPS1::Chrome> object with the given color number. You can use this
+Build a L<Term::Chrome> object with the given color number. You can use this
 constructor to create your own set of color constants.
 
 For example, C<color(0)> gives the same result as C<Black> (but not the same
@@ -322,7 +321,7 @@ C<Reset> : reset all colors and flags
 
 =head1 METHODS
 
-Here are the methods on C<AngelPS1::Chrome> objects:
+Here are the methods on C<Term::Chrome> objects:
 
 =over 4
 
@@ -370,8 +369,9 @@ Example:
 
 =head1 SEE ALSO
 
-L<AngelPS1::Compiler>: the C<angel-PS1> compiler has special support for
-C<AngelPS1::Chrome> values.
+L<AngelPS1> or L<https://github.com/dolmen/angel-PS1>: "The Angel's Prompt" is
+the project for which C<Term::Chrome> has been built. L<AngelPS1::Compiler>,
+the C<angel-PS1> compiler has special support for C<Term::Chrome> values.
 
 =head1 TRIVIA
 
