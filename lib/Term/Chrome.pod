@@ -191,5 +191,12 @@ Did you know that I<chartreuse> is one of the favorite color of Larry Wall?
 
 Olivier MenguE<eacute>, L<mailto:dolmen@cpan.org>
 
+=head1 COPYRIGHT & LICENSE
+
+Copyright E<copy> 2011 Olivier MenguE<eacute>.
+
+This library is free software; you can redistribute it and/or modify it under
+the same terms as Perl 5 itself.
+
 =cut
 # vim:set et ts=8 sw=4 sts=4:
