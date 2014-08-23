@@ -2,6 +2,8 @@ use strict;
 use warnings;
 
 package Term::Chrome;
+# ABSTRACT: DSL for colors and other terminal chrome
+our $VERSION = '1.000';
 
 # Pre-declare packages
 {
