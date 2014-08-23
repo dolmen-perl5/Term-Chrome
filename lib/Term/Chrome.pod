@@ -6,7 +6,8 @@ Term::Chrome - DSL for colors and other terminal chrome
 
 =head1 SYNOPSIS
 
-    use Term::Chrome qw<Red Blue Bold Reset color>;
+    use Term::Chrome qw<Red Blue Bold Reset Underline Green color>;
+    use feature qw<say>; # Just for this example
 
     # Base color constant and attribute
     say Red, 'red text', Reset;
