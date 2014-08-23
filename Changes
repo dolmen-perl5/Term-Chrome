@@ -1,4 +1,5 @@
 Revision history for Term-Chrome
 
 {{$NEXT}}
-        - Initial release
+        - Initial release, from Sofia, at YAPC::EU::2014
+	  (Code is mature, extracted from angel-PS1)
