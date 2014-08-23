@@ -2,6 +2,9 @@ Revision history for Term-Chrome
 
 {{$NEXT}}
 
+1.001  2014-08-24 00:43:54 EEST
+	- POD: add SEE ALSO links
+
 1.000  2014-08-23 12:35:33 EEST
         - Initial release, from Sofia, at YAPC::EU::2014
 	  (Code is mature, extracted from angel-PS1)

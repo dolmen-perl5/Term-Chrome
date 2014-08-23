@@ -3,7 +3,7 @@ use warnings;
 
 package Term::Chrome;
 # ABSTRACT: DSL for colors and other terminal chrome
-our $VERSION = '1.000';
+our $VERSION = '1.001';
 
 # Pre-declare packages
 {
