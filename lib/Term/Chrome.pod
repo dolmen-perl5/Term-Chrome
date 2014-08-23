@@ -180,9 +180,31 @@ Example:
 
 =head1 SEE ALSO
 
+Comments on each modules are opinions of the author.
+
+=over 4
+
+=item *
+
+L<Term::ANSIColor>: the same basic features (and the others should not be in
+Term::ANSIColor itself but in an extension), but with an awful API I could never
+even consider to use while keeping my sanity.
+
+=item *
+
+L<Term::ScreenColor>
+
+=item *
+
+L<PerlIO::via::ANSIColor>
+
+=item *
+
 L<AngelPS1> or L<https://github.com/dolmen/angel-PS1>: "The Angel's Prompt" is
 the project for which C<Term::Chrome> has been built. L<AngelPS1::Compiler>,
 the C<angel-PS1> compiler has special support for C<Term::Chrome> values.
+
+=back
 
 =head1 TRIVIA
 

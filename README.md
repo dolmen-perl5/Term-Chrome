@@ -118,7 +118,14 @@ Here are the methods on `Term::Chrome` objects:
 
 # SEE ALSO
 
-[AngelPS1](https://metacpan.org/pod/AngelPS1) or [https://github.com/dolmen/angel-PS1](https://github.com/dolmen/angel-PS1): "The Angel's Prompt" is
+Comments on each modules are opinions of the author.
+
+- [Term::ANSIColor](https://metacpan.org/pod/Term::ANSIColor): the same basic features (and the others should not be in
+Term::ANSIColor itself but in an extension), but with an awful API I could never
+even consider to use while keeping my sanity.
+- [Term::ScreenColor](https://metacpan.org/pod/Term::ScreenColor)
+- [PerlIO::via::ANSIColor](https://metacpan.org/pod/PerlIO::via::ANSIColor)
+- [AngelPS1](https://metacpan.org/pod/AngelPS1) or [https://github.com/dolmen/angel-PS1](https://github.com/dolmen/angel-PS1): "The Angel's Prompt" is
 the project for which `Term::Chrome` has been built. [AngelPS1::Compiler](https://metacpan.org/pod/AngelPS1::Compiler),
 the `angel-PS1` compiler has special support for `Term::Chrome` values.
 
