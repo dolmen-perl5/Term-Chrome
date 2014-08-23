@@ -36,12 +36,14 @@
       },
       "runtime" : {
          "requires" : {
+            "Exporter" : "5.57",
             "perl" : "5.008005"
          }
       },
       "test" : {
          "requires" : {
-            "Test::More" : "0.96"
+            "Test::More" : "0.96",
+            "Test::Synopsis" : "0.10"
          }
       }
    },
