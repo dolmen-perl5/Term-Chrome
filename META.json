@@ -42,6 +42,7 @@
       },
       "test" : {
          "requires" : {
+            "Test::Is" : "20140823",
             "Test::More" : "0.96",
             "Test::Synopsis" : "0.10"
          }
