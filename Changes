@@ -1,5 +1,7 @@
 Revision history for Term-Chrome
 
 {{$NEXT}}
+
+1.000  2014-08-23 12:35:33 EEST
         - Initial release, from Sofia, at YAPC::EU::2014
 	  (Code is mature, extracted from angel-PS1)
