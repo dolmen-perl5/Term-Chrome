@@ -13,9 +13,7 @@ our $VERSION = '1.000';
 
 use Carp ();
 
-our @CARP_NOT = qw<
-    Term::Chrome::Color
->;
+our @CARP_NOT = qw< Term::Chrome::Color >;
 
 # Private constructor for Term::Chrome objects. Lexical, so cross-packages.
 # Arguments:
