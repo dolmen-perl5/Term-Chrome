@@ -19,8 +19,10 @@ notifications:
     email: false
 install:
     #- cpanm Dist::Zilla::App::Command::xtest || { cat ~/.cpanm/build.log ; false ; }
-    - dzil authordeps --missing | cpanm || { cat ~/.cpanm/build.log ; false ; }
-    - dzil listdeps --author --missing | cpanm || { cat ~/.cpanm/build.log ; false ; }
+    #- dzil authordeps --missing | cpanm || { cat ~/.cpanm/build.log ; false ; }
+    #- dzil listdeps --author --missing | cpanm || { cat ~/.cpanm/build.log ; false ; }
+    cpanm Test::More Test::Is Test::Synopsis || { cat ~/.cpanm/build.log ; false ; }
 script:
-    - dzil test --author --release
+    - prove -lv t
+    #- dzil test --author --release
     #- dzil xtest
