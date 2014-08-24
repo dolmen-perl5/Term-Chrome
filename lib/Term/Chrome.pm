@@ -118,9 +118,12 @@ sub term
     if (defined($fg) || defined($bg)) {
         $r .= ';' if @$self > 2;
         if (defined $fg) {
+            # LeoNerd says that this should be ----------> "38:5:$fg"
+            # according to the spec but gnome-terminal doesn't support that
             $r .= $fg < 8 ? (30+$fg) : $fg < 16 ? "9$fg" : "38;5;$fg";
             $r .= ';' if defined $bg;
         }
+        #                                      -------> "48:5:$bg"
         $r .= $bg < 8 ? (40+$bg) : $bg < 16 ? "10$bg" : "48;5;$bg" if defined $bg;
     }
     "\e[${r}m"
