@@ -18,6 +18,9 @@ notifications:
             - "%{branch}: %{message} %{build_url}"
     email: false
 install:
-    - cpanm --notest Test::More || { cat ~/.cpanm/build.log ; false ; }
+    - cpanm Dist::Zilla::App::Command::xtest || { cat ~/.cpanm/build.log ; false ; }
+    - dzil authordeps --missing | cpanm || { cat ~/.cpanm/build.log ; false ; }
+    - dzil listdeps --author --missing | cpanm || { cat ~/.cpanm/build.log ; false ; }
 script:
-    - prove -lv t
+    - dzil test --author --release
+    - dzil xtest
