@@ -2,7 +2,7 @@
 use strict;
 use warnings FATAL => 'all';
 
-use Test::More 0.98 tests => 24;
+use Test::More 0.98 tests => 25;
 use Term::Chrome;
 use Scalar::Util 'refaddr';
 
@@ -26,6 +26,18 @@ is("${ Red+Bold }", "\e[1;31m", 'deref: ${ Red+Bold }');
 is("${ +Red }", "\e[31m", 'deref: ${ +Red }');
 is("${( Red )}", "\e[31m", 'deref: ${( Red )}');
 note("normal ${ Red+Bold } RED ${ +Reset } normal");
+note ref(Blue / Yellow + Reset + Reverse);
+
+
+# &{}
+#
+# Direct usage of codulation doesn't work below perl 5.21.4
+# See t/12-codulation.t
+my $YellowBlue = Blue / Yellow + Reset + Reverse;
+is($YellowBlue->("Text"),
+    "\e[;7;34;43mText\e[m",
+    "(Blue / Yellow + Reset + Reverse) but using code deref");
+
 
 note("${ Black / White }Black / White${ +Reset }");
 

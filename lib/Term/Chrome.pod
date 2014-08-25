@@ -176,7 +176,23 @@ Example:
 
     say "normal ${ Red } red ${ Reset }";
 
+=item C<&{}> (code dereference, or "codulation")
+
+Wrap some text with the given chrome and C<Reset>.
+
+Example:
+
+    say Red->("red text");
+
+Unfortunately perl had a bug
+(L<perl RT#122607|https://rt.perl.org/Ticket/Display.html?id=122607>) that makes this feature not much usable in practice when applied to constants. That bug
+is fixed in perl 5.21.4+.
+
 =back
+
+=head1 BUGS
+
+See the warning about C<&{}> above.
 
 =head1 SEE ALSO
 
