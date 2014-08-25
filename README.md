@@ -27,7 +27,7 @@ Term::Chrome - DSL for colors and other terminal chrome
 
     # Get an efficient chromizer sub (applies given chrome before, and
     # Reset after the argument)
-    my $boldifier = \&{ Bold };
+    my $boldifier = \&{ +Bold };
     # Use the chromizer
     say $boldifier->("bold text");
 
