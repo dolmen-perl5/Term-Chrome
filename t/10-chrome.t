@@ -40,7 +40,7 @@ is($YellowBlue->("Text"),
     "\e[;7;34;43mText\e[m",
     "(Blue / Yellow + Reset + Reverse) but using code deref");
 
-my $YellowBlue_colorizer = \&{ $YellowBlue };
+my $YellowBlue_colorizer = \&{ Blue / Yellow + Reset + Reverse };
 note $YellowBlue_colorizer->("Text");
 isa_ok($YellowBlue_colorizer, 'CODE', '\&{ Blue / Yellow + Reset + Reverse }');
 is($YellowBlue_colorizer->("Text"),
