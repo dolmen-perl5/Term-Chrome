@@ -54,9 +54,7 @@ sub color ($)
 
 use Exporter 5.57 'import';  # perl 5.8.3
 
-#our @EXPORT_OK;
-#BEGIN { our @EXPORT_OK = ('color'); }
-
+# Build the constants and the @EXPORT list
 BEGIN {
     my $mk_flag = sub { $Chrome->(__PACKAGE__, undef, undef, $_[0]) };
 
@@ -157,6 +155,7 @@ sub deref
     \("$_[0]")
 }
 
+# Stringified Reset for use in chomizers
 my $Reset_term = Reset->term;
 
 sub chromizer
