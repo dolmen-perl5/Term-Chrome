@@ -27,6 +27,12 @@ Term::Chrome - DSL for colors and other terminal chrome
     # Extract components
     say( (Red/Blue)->bg, "blue text", (Green+Reset)->flags );
 
+    # Get an efficient chromizer sub (applies given chrome before, and
+    # Reset after the argument)
+    my $boldifier = \&{ Bold };
+    # Use the chromizer
+    say $boldifier->("bold text");
+
 =head1 DESCRIPTION
 
 C<Term::Chrome> is a domain-specific language (DSL) for terminal decoration
@@ -183,10 +189,18 @@ Wrap some text with the given chrome and C<Reset>.
 Example:
 
     say Red->("red text");
+    # Same result as:
+    say Red, "red text", Reset;
 
 Unfortunately perl had a bug
 (L<perl RT#122607|https://rt.perl.org/Ticket/Display.html?id=122607>) that makes this feature not much usable in practice when applied to constants. That bug
 is fixed in perl 5.21.4+.
+
+This can also be used to extract a colorizer sub that will be more efficient
+if you reuse it:
+
+    my $redifier = \&{ Red };
+    say $redifier->("red text");
 
 =back
 
