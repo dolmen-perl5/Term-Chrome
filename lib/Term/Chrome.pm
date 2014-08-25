@@ -21,20 +21,23 @@ our @CARP_NOT = qw< Term::Chrome::Color >;
 # - foreground color
 # - background color
 # - flags list
-my $Chrome = sub (*$$;@)
-{
-    my ($class, @self) = @_;
+my $Chrome;
+BEGIN {
+    $Chrome = sub (*$$;@)
+    {
+        my ($class, @self) = @_;
 
-    my $fg = $self[0];
-    Carp::croak "invalid fg color $fg"
-        if defined($fg) && ($fg < 0 || $fg > 255);
-    my $bg = $self[1];
-    Carp::croak "invalid bg color $bg"
-        if defined($bg) && ($bg < 0 || $bg > 255);
-    # TODO check flags
+        my $fg = $self[0];
+        Carp::croak "invalid fg color $fg"
+            if defined($fg) && ($fg < 0 || $fg > 255);
+        my $bg = $self[1];
+        Carp::croak "invalid bg color $bg"
+            if defined($bg) && ($bg < 0 || $bg > 255);
+        # TODO check flags
 
-    bless \@self, $class
-};
+        bless \@self, $class
+    }
+}
 
 
 # Cache for color objects
@@ -54,7 +57,7 @@ use Exporter 5.57 'import';  # perl 5.8.3
 #our @EXPORT_OK;
 #BEGIN { our @EXPORT_OK = ('color'); }
 
-{
+BEGIN {
     my $mk_flag = sub { $Chrome->(__PACKAGE__, undef, undef, $_[0]) };
 
     # This is a method
@@ -154,6 +157,8 @@ sub deref
     \("$_[0]")
 }
 
+my $Reset_term = Reset->term;
+
 sub chromizer
 {
     my $term = shift->term;
@@ -162,7 +167,7 @@ sub chromizer
             Carp::carp "missing argument in Term::Chrome chromizer";
             return
         }
-        $self->term . $_[0] . Reset()->term
+        $term . $_[0] . $Reset_term
     }
 }
 
