@@ -108,7 +108,7 @@ use overload
     '""' => 'term',
     '+'  => 'plus',
     '${}' => 'deref',
-    '&{}' => 'chromize',
+    '&{}' => 'chromizer',
 ;
 
 sub term
@@ -154,12 +154,12 @@ sub deref
     \("$_[0]")
 }
 
-sub chromize
+sub chromizer
 {
     my $self = shift;
     sub {
         unless (defined $_[0]) {
-            Carp::carp "missing argument in Term::Chrome code deref";
+            Carp::carp "missing argument in Term::Chrome chromizer";
             return
         }
         $self->term . $_[0] . Reset()->term
