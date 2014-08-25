@@ -2,7 +2,7 @@
 use strict;
 use warnings FATAL => 'all';
 
-use Test::More 0.98 tests => 25;
+use Test::More 0.98 tests => 28;
 use Term::Chrome;
 use Scalar::Util 'refaddr';
 
@@ -34,9 +34,19 @@ note ref(Blue / Yellow + Reset + Reverse);
 # Direct usage of codulation doesn't work below perl 5.21.4
 # See t/12-codulation.t
 my $YellowBlue = Blue / Yellow + Reset + Reverse;
+isa_ok($YellowBlue, 'Term::Chrome', 'Blue / Yellow + Reset + Reverse');
+note $YellowBlue->("Text");
 is($YellowBlue->("Text"),
     "\e[;7;34;43mText\e[m",
     "(Blue / Yellow + Reset + Reverse) but using code deref");
+
+my $YellowBlue_colorizer = \&{ $YellowBlue };
+note $YellowBlue_colorizer->("Text");
+isa_ok($YellowBlue_colorizer, 'CODE', '\&{ Blue / Yellow + Reset + Reverse }');
+is($YellowBlue_colorizer->("Text"),
+    "\e[;7;34;43mText\e[m",
+    "(Blue / Yellow + Reset + Reverse) but using dereferenced code deref");
+
 
 
 note("${ Black / White }Black / White${ +Reset }");
