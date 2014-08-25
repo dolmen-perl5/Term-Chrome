@@ -156,7 +156,7 @@ sub deref
 
 sub chromizer
 {
-    my $self = shift;
+    my $term = shift->term;
     sub {
         unless (defined $_[0]) {
             Carp::carp "missing argument in Term::Chrome chromizer";
