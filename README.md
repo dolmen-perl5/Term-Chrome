@@ -116,6 +116,22 @@ Here are the methods on `Term::Chrome` objects:
 
         say "normal ${ Red } red ${ Reset }";
 
+- `&{}` (code dereference, or "codulation")
+
+    Wrap some text with the given chrome and `Reset`.
+
+    Example:
+
+        say Red->("red text");
+
+    Unfortunately perl had a bug
+    ([perl RT#122607](https://rt.perl.org/Ticket/Display.html?id=122607)) that makes this feature not much usable in practice when applied to constants. That bug
+    is fixed in perl 5.21.4+.
+
+# BUGS
+
+See the warning about `&{}` above.
+
 # SEE ALSO
 
 Comments on each modules are opinions of the author.
