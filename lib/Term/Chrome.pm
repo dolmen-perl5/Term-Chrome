@@ -156,17 +156,17 @@ sub deref
 }
 
 # Stringified Reset for use in chomizers
-my $Reset_term = Reset->term;
+my $Reset_str = Reset->term;
 
 sub chromizer
 {
-    my $term = shift->term;
+    my $chrome_str = shift->term;
     sub {
         unless (defined $_[0]) {
             Carp::carp "missing argument in Term::Chrome chromizer";
             return
         }
-        $term . $_[0] . $Reset_term
+        $chrome_str . $_[0] . $Reset_str
     }
 }
 
