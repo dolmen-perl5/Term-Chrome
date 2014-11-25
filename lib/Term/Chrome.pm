@@ -95,9 +95,9 @@ BEGIN {
     our @EXPORT = ('color', keys %const);
 
     if ($^V lt v5.16.0) {
+        no strict 'refs';
         while (my ($name, $value) = each %const) {
-            no strict 'refs';
-            *$name = sub () { $value };
+            *{"Term::Chrome::$name"} = sub () { $value };
         }
     } else {
         require constant;
