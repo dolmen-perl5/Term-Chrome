@@ -140,6 +140,8 @@ sub plus
 {
     my ($self, $other, $swap) = @_;
 
+    return $self unless defined $other;
+
     die 'invalid value for +' unless $other->isa(__PACKAGE__);
 
     my @new = @$self;
