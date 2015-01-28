@@ -62,7 +62,7 @@ BEGIN {
     sub flags
     {
         my $self = shift;
-        return undef unless $#$self >= 2;
+        return undef unless @$self > 2;
         $Chrome->(__PACKAGE__, undef, undef, @{$self}[2..$#$self])
     }
 
