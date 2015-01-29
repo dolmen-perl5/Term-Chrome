@@ -8,6 +8,8 @@ use Scalar::Util 'refaddr';
 
 is(Red->term, "\e[31m", 'Red');
 is(Bold->term, "\e[1m", 'Bold');
+isa_ok(Red, 'Term::Chrome', 'Red');
+isa_ok(Bold, 'Term::Chrome', 'Bold');
 
 my $BoldRed = Red + Bold;
 ok(defined($BoldRed),'Red+Bold defined');
