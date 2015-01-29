@@ -2,7 +2,7 @@
 use strict;
 use warnings FATAL => 'all';
 
-use Test::More 0.98 tests => 29;
+use Test::More 0.98 tests => 31;
 use Term::Chrome;
 use Scalar::Util 'refaddr';
 
