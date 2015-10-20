@@ -11,8 +11,11 @@ our $VERSION = '1.001';
         Term::Chrome::Color;
 }
 
-use Carp ();
 
+use Exporter 5.57 'import';  # perl 5.8.3
+# @EXPORT is defined at the end
+
+use Carp ();
 our @CARP_NOT = qw< Term::Chrome::Color >;
 
 # Private constructor for Term::Chrome objects. Lexical, so cross-packages.
@@ -44,13 +47,14 @@ sub color ($)
 {
     my $color = shift;
     die "invalid color" if ref $color;
-    no overloading; # ||=
-    $COLOR_CACHE{chr($color)} ||=
-        Term::Chrome::Color->$new($color, undef)
+    my $c = chr $color;
+    # We can not use '$COLOR_CACHE{$c} ||= ...' because this requires overloading
+    # We can not use 'no overloading' because this requires perl 5.10
+    exists $COLOR_CACHE{$c}
+    ?  $COLOR_CACHE{$c}
+    : ($COLOR_CACHE{$c} = Term::Chrome::Color->$new($color, undef))
 }
 
-
-use Exporter 5.57 'import';  # perl 5.8.3
 
 use overload
     '""' => 'term',
@@ -108,7 +112,6 @@ sub _deref
 
 sub _concat
 {
-    no overloading;
     $_[2] ? $_[1].$_[0]->term
           : $_[0]->term.$_[1]
 }
