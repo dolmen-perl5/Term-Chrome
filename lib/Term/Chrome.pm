@@ -84,10 +84,6 @@ sub term
     "\e[${r}m"
 }
 
-sub clone
-{
-    bless [ @{$_[0]} ], __PACKAGE__
-}
 
 sub _plus
 {
