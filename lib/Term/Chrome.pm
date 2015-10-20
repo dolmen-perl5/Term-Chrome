@@ -145,6 +145,13 @@ sub bg
     defined($c) ? color($c) : undef
 }
 
+sub flags
+{
+    my $self = shift;
+    return undef unless @$self > 2;
+    $Chrome->(__PACKAGE__, undef, undef, @{$self}[2..$#$self])
+}
+
 package # no index: private package
     Term::Chrome::Color;
 
@@ -183,14 +190,6 @@ package
 # (according to a comment in Types::Serialiser source)
 BEGIN {
     my $mk_flag = sub { $Chrome->(__PACKAGE__, undef, undef, $_[0]) };
-
-    # This is a method
-    sub flags
-    {
-        my $self = shift;
-        return undef unless @$self > 2;
-        $Chrome->(__PACKAGE__, undef, undef, @{$self}[2..$#$self])
-    }
 
     my %const = (
         Reset      => $mk_flag->(''),
