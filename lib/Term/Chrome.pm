@@ -98,7 +98,7 @@ sub _plus
     $new[1] = $other->[1] if defined $other->[1];
     push @new, @{$other}[2 .. $#$other];
 
-    bless \@new, __PACKAGE__
+    bless \@new
 }
 
 sub _deref
