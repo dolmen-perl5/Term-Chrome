@@ -108,9 +108,9 @@ BEGIN {
 
 use overload
     '""' => 'term',
-    '+'  => 'plus',
-    '${}' => 'deref',
-    '&{}' => 'chromizer',
+    '+'  => '_plus',
+    '${}' => '_deref',
+    '&{}' => '_chromizer',
     '.'   => '_concat',
     fallback => 0,
 ;
@@ -139,7 +139,7 @@ sub clone
     bless [ @{$_[0]} ], __PACKAGE__
 }
 
-sub plus
+sub _plus
 {
     my ($self, $other, $swap) = @_;
 
@@ -155,7 +155,7 @@ sub plus
     bless \@new, __PACKAGE__
 }
 
-sub deref
+sub _deref
 {
     \("$_[0]")
 }
@@ -170,7 +170,7 @@ sub _concat
 # Stringified Reset for use in chomizers
 my $Reset_str = Reset->term;
 
-sub chromizer
+sub _chromizer
 {
     my $chrome_str = shift->term;
     sub {
@@ -207,8 +207,8 @@ use overload
         ? ()
         : (
             '""'  => \&Term::Chrome::term,
-            '+'   => \&Term::Chrome::plus,
-            '${}' => \&Term::Chrome::deref,
+            '+'   => \&Term::Chrome::_plus,
+            '${}' => \&Term::Chrome::_deref,
             '.'   => \&Term::Chrome::_concat,
         )
     ),
