@@ -6,6 +6,9 @@ Revision history for Term-Chrome
 	  perl bug.
 	  This allows to build efficient "chromizers" (closures that colorize
 	  and Reset).
+	- Disable fallbacks for overload.pm, to reduce (dangerous) magic
+	- Remove ->clone method that is useless as Term::Chrome values are
+	  immutables
 
 1.001  2014-08-24 00:43:54 EEST
 	- POD: add SEE ALSO links
