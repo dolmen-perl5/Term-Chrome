@@ -47,8 +47,9 @@ sub color ($)
 {
     my $color = shift;
     die "invalid color" if ref $color;
+    no overloading; # ||=
     $COLOR_CACHE{chr($color)} ||=
-        $Chrome->(Term::Chrome::Color::, $color, undef);
+        $Chrome->(Term::Chrome::Color::, $color, undef)
 }
 
 
@@ -110,6 +111,8 @@ use overload
     '+'  => 'plus',
     '${}' => 'deref',
     '&{}' => 'chromizer',
+    '.'   => '_concat',
+    fallback => 0,
 ;
 
 sub term
@@ -157,6 +160,13 @@ sub deref
     \("$_[0]")
 }
 
+sub _concat
+{
+    no overloading;
+    $_[2] ? $_[1].$_[0]->term
+          : $_[0]->term.$_[1]
+}
+
 # Stringified Reset for use in chomizers
 my $Reset_str = Reset->term;
 
@@ -199,8 +209,10 @@ use overload
             '""'  => \&Term::Chrome::term,
             '+'   => \&Term::Chrome::plus,
             '${}' => \&Term::Chrome::deref,
+            '.'   => \&Term::Chrome::_concat,
         )
     ),
+    fallback => 0,
 ;
 
 sub over
