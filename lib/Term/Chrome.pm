@@ -21,23 +21,20 @@ our @CARP_NOT = qw< Term::Chrome::Color >;
 # - foreground color
 # - background color
 # - flags list
-my $Chrome;
-BEGIN {
-    $Chrome = sub (*$$;@)
-    {
-        my ($class, @self) = @_;
+my $Chrome = sub (*$$;@)
+{
+    my ($class, @self) = @_;
 
-        my $fg = $self[0];
-        Carp::croak "invalid fg color $fg"
-            if defined($fg) && ($fg < 0 || $fg > 255);
-        my $bg = $self[1];
-        Carp::croak "invalid bg color $bg"
-            if defined($bg) && ($bg < 0 || $bg > 255);
-        # TODO check flags
+    my $fg = $self[0];
+    Carp::croak "invalid fg color $fg"
+        if defined($fg) && ($fg < 0 || $fg > 255);
+    my $bg = $self[1];
+    Carp::croak "invalid bg color $bg"
+        if defined($bg) && ($bg < 0 || $bg > 255);
+    # TODO check flags
 
-        bless \@self, $class
-    }
-}
+    bless \@self, $class
+};
 
 
 # Cache for color objects
@@ -188,50 +185,48 @@ package
 # and Term::Chrome::Color) because overload must be set before blessing
 # due to a bug in perl < 5.18
 # (according to a comment in Types::Serialiser source)
-BEGIN {
-    my $mk_flag = sub { $Chrome->(__PACKAGE__, undef, undef, $_[0]) };
+my $mk_flag = sub { $Chrome->(__PACKAGE__, undef, undef, $_[0]) };
 
-    my %const = (
-        Reset      => $mk_flag->(''),
-        ResetFg    => $mk_flag->(39),
-        ResetBg    => $mk_flag->(49),
-        ResetFlags => $mk_flag->(22),
-        Standout   => $mk_flag->(7),
-        Underline  => $mk_flag->(4),
-        Reverse    => $mk_flag->(7),
-        Blink      => $mk_flag->(5),
-        Bold       => $mk_flag->(1),
+my %const = (
+    Reset      => $mk_flag->(''),
+    ResetFg    => $mk_flag->(39),
+    ResetBg    => $mk_flag->(49),
+    ResetFlags => $mk_flag->(22),
+    Standout   => $mk_flag->(7),
+    Underline  => $mk_flag->(4),
+    Reverse    => $mk_flag->(7),
+    Blink      => $mk_flag->(5),
+    Bold       => $mk_flag->(1),
 
-        Black      => color 0,
-        Red        => color 1,
-        Green      => color 2,
-        Yellow     => color 3,
-        Blue       => color 4,
-        Magenta    => color 5,
-        Cyan       => color 6,
-        White      => color 7,
+    Black      => color 0,
+    Red        => color 1,
+    Green      => color 2,
+    Yellow     => color 3,
+    Blue       => color 4,
+    Magenta    => color 5,
+    Cyan       => color 6,
+    White      => color 7,
 
-        # Larry Wall's favorite color
-        # The true 'chartreuse' color from X11 colors is #7fff00
-        # The xterm-256 color #118 is near: #87ff00
-        Chartreuse => color 118,
-    );
+    # Larry Wall's favorite color
+    # The true 'chartreuse' color from X11 colors is #7fff00
+    # The xterm-256 color #118 is near: #87ff00
+    Chartreuse => color 118,
+);
 
-    our @EXPORT = ('color', keys %const);
+our @EXPORT = ('color', keys %const);
 
-    if ($^V lt v5.16.0) {
-        no strict 'refs';
-        while (my ($name, $value) = each %const) {
-            *{"Term::Chrome::$name"} = sub () { $value };
-        }
-    } else {
-        require constant;
-        constant->import(\%const);
+if ($^V lt v5.16.0) {
+    no strict 'refs';
+    while (my ($name, $value) = each %const) {
+        *{"Term::Chrome::$name"} = sub () { $value };
     }
+} else {
+    require constant;
+    constant->import(\%const);
 }
 
 # See $Reset_str declaration above
-$Reset_str = Reset->term;
+$Reset_str = $const{Reset}->term;
 
 1;
 # vim:set et ts=8 sw=4 sts=4:
