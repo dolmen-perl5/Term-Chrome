@@ -155,7 +155,7 @@ package # no index: private package
 our @ISA = (Term::Chrome::);
 
 use overload
-    '/'   => 'over',
+    '/'   => '_over',
     # Even if overloading is set in the super class, we have to repeat it for old perls
     (
         $^V ge v5.18.0
@@ -170,7 +170,7 @@ use overload
     fallback => 0,
 ;
 
-sub over
+sub _over
 {
     die 'invalid bg color for /' unless ref($_[1]) eq __PACKAGE__;
     $Chrome->(Term::Chrome::, $_[0]->[0], $_[1]->[0])
