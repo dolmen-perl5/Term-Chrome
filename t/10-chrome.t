@@ -2,7 +2,7 @@
 use strict;
 use warnings FATAL => 'all';
 
-use Test::More 0.98 tests => 31;
+use Test::More 0.98 tests => 33;
 use Term::Chrome;
 use Scalar::Util 'refaddr';
 
@@ -64,6 +64,8 @@ is(substr("${ (color(31) / color(240)) + Reset }", 1),
 	 "[;38;5;31;48;5;240m");
 
 # Test extracting components
+isa_ok(Blue, 'Term::Chrome');
+isa_ok(Blue->fg, 'Term::Chrome');
 is(${ Blue->fg }, ${ +Blue }, 'Blue->fg');
 is(   Blue->bg,   undef,      'Blue->bg => undef');
 is(${ (Red/Blue)->fg }, ${ +Red }, '(Red/Blue)->fg');
