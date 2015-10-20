@@ -5,3 +5,7 @@
 MYMETA.*
 !META.json
 /.prove
+/nytprof
+/nytprof.out*
+/milla*.txt
+/tu*.txt
