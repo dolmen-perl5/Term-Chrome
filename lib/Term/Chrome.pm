@@ -21,7 +21,7 @@ our @CARP_NOT = qw< Term::Chrome::Color >;
 # - foreground color
 # - background color
 # - flags list
-my $Chrome = sub (*$$;@)
+my $new = sub
 {
     my ($class, @self) = @_;
 
@@ -46,7 +46,7 @@ sub color ($)
     die "invalid color" if ref $color;
     no overloading; # ||=
     $COLOR_CACHE{chr($color)} ||=
-        $Chrome->(Term::Chrome::Color::, $color, undef)
+        Term::Chrome::Color->$new($color, undef)
 }
 
 
@@ -146,7 +146,7 @@ sub flags
 {
     my $self = shift;
     return undef unless @$self > 2;
-    $Chrome->(__PACKAGE__, undef, undef, @{$self}[2..$#$self])
+    __PACKAGE__->$new(undef, undef, @{$self}[2..$#$self])
 }
 
 package # no index: private package
@@ -173,7 +173,7 @@ use overload
 sub _over
 {
     die 'invalid bg color for /' unless ref($_[1]) eq __PACKAGE__;
-    $Chrome->(Term::Chrome::, $_[0]->[0], $_[1]->[0])
+    Term::Chrome->$new($_[0]->[0], $_[1]->[0])
 }
 
 package
@@ -185,7 +185,8 @@ package
 # and Term::Chrome::Color) because overload must be set before blessing
 # due to a bug in perl < 5.18
 # (according to a comment in Types::Serialiser source)
-my $mk_flag = sub { $Chrome->(__PACKAGE__, undef, undef, $_[0]) };
+
+my $mk_flag = sub { __PACKAGE__->$new(undef, undef, $_[0]) };
 
 my %const = (
     Reset      => $mk_flag->(''),
