@@ -55,57 +55,6 @@ sub color ($)
 
 use Exporter 5.57 'import';  # perl 5.8.3
 
-# Build the constants and the @EXPORT list
-BEGIN {
-    my $mk_flag = sub { $Chrome->(__PACKAGE__, undef, undef, $_[0]) };
-
-    # This is a method
-    sub flags
-    {
-        my $self = shift;
-        return undef unless @$self > 2;
-        $Chrome->(__PACKAGE__, undef, undef, @{$self}[2..$#$self])
-    }
-
-    my %const = (
-        Reset      => $mk_flag->(''),
-        ResetFg    => $mk_flag->(39),
-        ResetBg    => $mk_flag->(49),
-        ResetFlags => $mk_flag->(22),
-        Standout   => $mk_flag->(7),
-        Underline  => $mk_flag->(4),
-        Reverse    => $mk_flag->(7),
-        Blink      => $mk_flag->(5),
-        Bold       => $mk_flag->(1),
-
-        Black      => color 0,
-        Red        => color 1,
-        Green      => color 2,
-        Yellow     => color 3,
-        Blue       => color 4,
-        Magenta    => color 5,
-        Cyan       => color 6,
-        White      => color 7,
-
-        # Larry Wall's favorite color
-        # The true 'chartreuse' color from X11 colors is #7fff00
-        # The xterm-256 color #118 is near: #87ff00
-        Chartreuse => color 118,
-    );
-
-    our @EXPORT = ('color', keys %const);
-
-    if ($^V lt v5.16.0) {
-        no strict 'refs';
-        while (my ($name, $value) = each %const) {
-            *{"Term::Chrome::$name"} = sub () { $value };
-        }
-    } else {
-        require constant;
-        constant->import(\%const);
-    }
-}
-
 use overload
     '""' => 'term',
     '+'  => '_plus',
@@ -167,8 +116,10 @@ sub _concat
           : $_[0]->term.$_[1]
 }
 
-# Stringified Reset for use in chomizers
-my $Reset_str = Reset->term;
+
+# Stringified Reset constant for use in chomizers
+# (the value is set at the end of this source)
+my $Reset_str;
 
 sub _chromizer
 {
@@ -220,6 +171,68 @@ sub over
     die 'invalid bg color for /' unless ref($_[1]) eq __PACKAGE__;
     $Chrome->(Term::Chrome::, $_[0]->[0], $_[1]->[0])
 }
+
+package
+    Term::Chrome;
+
+# Build the constants and the @EXPORT list
+#
+# This block must be after "use overload" (for both Term::Chrome
+# and Term::Chrome::Color) because overload must be set before blessing
+# due to a bug in perl < 5.18
+# (according to a comment in Types::Serialiser source)
+BEGIN {
+    my $mk_flag = sub { $Chrome->(__PACKAGE__, undef, undef, $_[0]) };
+
+    # This is a method
+    sub flags
+    {
+        my $self = shift;
+        return undef unless @$self > 2;
+        $Chrome->(__PACKAGE__, undef, undef, @{$self}[2..$#$self])
+    }
+
+    my %const = (
+        Reset      => $mk_flag->(''),
+        ResetFg    => $mk_flag->(39),
+        ResetBg    => $mk_flag->(49),
+        ResetFlags => $mk_flag->(22),
+        Standout   => $mk_flag->(7),
+        Underline  => $mk_flag->(4),
+        Reverse    => $mk_flag->(7),
+        Blink      => $mk_flag->(5),
+        Bold       => $mk_flag->(1),
+
+        Black      => color 0,
+        Red        => color 1,
+        Green      => color 2,
+        Yellow     => color 3,
+        Blue       => color 4,
+        Magenta    => color 5,
+        Cyan       => color 6,
+        White      => color 7,
+
+        # Larry Wall's favorite color
+        # The true 'chartreuse' color from X11 colors is #7fff00
+        # The xterm-256 color #118 is near: #87ff00
+        Chartreuse => color 118,
+    );
+
+    our @EXPORT = ('color', keys %const);
+
+    if ($^V lt v5.16.0) {
+        no strict 'refs';
+        while (my ($name, $value) = each %const) {
+            *{"Term::Chrome::$name"} = sub () { $value };
+        }
+    } else {
+        require constant;
+        constant->import(\%const);
+    }
+}
+
+# See $Reset_str declaration above
+$Reset_str = Reset->term;
 
 1;
 # vim:set et ts=8 sw=4 sts=4:
