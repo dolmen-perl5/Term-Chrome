@@ -1,6 +1,8 @@
 Revision history for Term-Chrome
 
 {{$NEXT}}
+
+1.010  2015-10-21 01:51:21 CEST
 	- Add &{} overloading ("codulate") to easily wrap some text with color
 	  and Reset. Unfortunately, it is not usable in practice due a core
 	  perl bug.
