@@ -151,7 +151,7 @@ sub flags
 package # no index: private package
     Term::Chrome::Color;
 
-our @ISA = (Term::Chrome::);
+our @ISA = qw< Term::Chrome >;
 
 use overload
     '/'   => '_over',
@@ -218,7 +218,7 @@ our @EXPORT = ('color', keys %const);
 if ($^V lt v5.16.0) {
     no strict 'refs';
     while (my ($name, $value) = each %const) {
-        *{"Term::Chrome::$name"} = sub () { $value };
+        *{__PACKAGE__."::$name"} = sub () { $value };
     }
 } else {
     require constant;
