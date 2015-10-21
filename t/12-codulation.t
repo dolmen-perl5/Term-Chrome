@@ -17,6 +17,8 @@ use warnings;
 use Test::Is 'perl 5.21.4';
 use Test::More tests => 2;
 
+use Term::Chrome;
+
 my $YellowBlue = Blue / Yellow + Reset + Reverse;
 is($YellowBlue->("Text"),
     "\e[;7;34;43mText\e[m",

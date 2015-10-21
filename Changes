@@ -1,11 +1,12 @@
 Revision history for Term-Chrome
 
 {{$NEXT}}
+	- Fix t/12-codulation.t for perl >= 5.21.4
 
 1.010  2015-10-21 01:51:21 CEST
 	- Add &{} overloading ("codulate") to easily wrap some text with color
 	  and Reset. Unfortunately, it is not usable in practice due a core
-	  perl bug.
+	  perl bug < 5.21.4.
 	  This allows to build efficient "chromizers" (closures that colorize
 	  and Reset).
 	- Disable fallbacks for overload.pm, to reduce (dangerous) magic
