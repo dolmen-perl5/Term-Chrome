@@ -215,15 +215,10 @@ my %const = (
 
 our @EXPORT = ('color', keys %const);
 
-if ($^V lt v5.16.0) {
-    no strict 'refs';
-    while (my ($name, $value) = each %const) {
-        *{__PACKAGE__."::$name"} = sub () { $value };
-    }
-} else {
-    require constant;
-    constant->import(\%const);
-}
+# In 17fd029f we avoided to use constant.pm on perl < 5.16
+# This does not seem necessary anymore.
+require constant;
+constant->import(\%const);
 
 # See $Reset_str declaration above
 $Reset_str = $const{Reset}->term;
