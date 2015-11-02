@@ -1,6 +1,8 @@
 Revision history for Term-Chrome
 
 {{$NEXT}}
+	- Document a workaround for codulation of constants on perl < 5.21.4
+	  (use a do {} around the constant)
 
 1.011  2015-10-21 09:13:44 CEST
 	- Fix t/12-codulation.t for perl >= 5.21.4
