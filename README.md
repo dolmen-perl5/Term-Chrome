@@ -135,6 +135,9 @@ Here are the methods on `Term::Chrome` objects:
     Unfortunately perl had a bug
     ([perl RT#122607](https://rt.perl.org/Ticket/Display.html?id=122607)) that makes this feature not much usable in practice when applied to constants. That bug
     is fixed in perl 5.21.4+.
+    On perl < 5.21.4 you have to wrap the chrome constant in a `do {}`:
+
+        say do{ Red }->("red text");
 
     This can also be used to extract a colorizer sub that will be more efficient
     if you reuse it:

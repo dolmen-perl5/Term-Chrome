@@ -1,6 +1,8 @@
 Revision history for Term-Chrome
 
 {{$NEXT}}
+
+1.012  2015-11-03 01:00:13 CET
 	- Document a workaround for codulation of constants on perl < 5.21.4
 	  (use a do {} around the constant)
 
