@@ -7,6 +7,8 @@ perl:
     - "5.16"
     - "5.18"
     - "5.20"
+# For the container based infrastructure
+sudo: false
 notifications:
     #on_success: change
     on_success: always
