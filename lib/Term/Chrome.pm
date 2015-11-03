@@ -113,7 +113,7 @@ sub _concat
 }
 
 
-# Stringified Reset constant for use in chomizers
+# Stringified Reset constant for use in chromizers
 # (the value is set at the end of this source)
 my $Reset_str;
 
