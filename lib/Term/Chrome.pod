@@ -184,7 +184,7 @@ Examples:
     say "normal ${ Red + Bold } red ${ +Reset }";
 
 Note that you must force expression parsing context when a Chrome constant is
-used alone inside C<${ }>: C<${ +Red }> or C<${ (Red) } or C<${ Red() }>.
+used alone inside C<${ }>: C<${ +Red }> or C<${ (Red) }> or C<${ Red() }>.
 C<use strict 'vars';> will detect those cases, but you may miss them in
 one-liners.
 
