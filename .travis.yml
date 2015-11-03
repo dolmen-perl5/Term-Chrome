@@ -24,4 +24,4 @@ install:
     - test "${TRAVIS_PERL_VERSION/./}" -lt 512 || { cpanm --notest Dist::Milla && dzil listdeps --author --missing | cpanm ; } || { cat ~/.cpanm/build.log ; false ; }
 script:
     - prove -lv t
-    - test "${TRAVIS_PERL_VERSION/./}" -lt 512 || dzil test --author --release
+    - test "${TRAVIS_PERL_VERSION/./}" -lt 512 || dzil test -v --author --release
