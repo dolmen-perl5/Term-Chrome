@@ -18,11 +18,8 @@ notifications:
             - "%{branch}: %{message} %{build_url}"
     email: false
 install:
-    #- cpanm Dist::Zilla::App::Command::xtest || { cat ~/.cpanm/build.log ; false ; }
-    #- dzil authordeps --missing | cpanm || { cat ~/.cpanm/build.log ; false ; }
-    #- dzil listdeps --author --missing | cpanm || { cat ~/.cpanm/build.log ; false ; }
-    cpanm Test::More Test::Is Test::Synopsis || { cat ~/.cpanm/build.log ; false ; }
+    - cpanm --notest Test::More Test::Is Test::Synopsis || { cat ~/.cpanm/build.log ; false ; }
+    - test "$TRAVIS_PERL_VERSION" = 5.8 || { cpanm --notest Dist::Milla && dzil listdeps --author --missing | cpanm ; } || { cat ~/.cpanm/build.log ; false ; }
 script:
     - prove -lv t
-    #- dzil test --author --release
-    #- dzil xtest
+    - test "$TRAVIS_PERL_VERSION" = 5.8 || dzil test --author --release
