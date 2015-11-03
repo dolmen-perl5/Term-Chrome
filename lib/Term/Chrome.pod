@@ -178,11 +178,17 @@ particularly useful to directly use a Chrome object in a double quoted string.
 Same result as C<""> (stringification). This operator is overloaded because
 it is convenient to interpolate Chrome expressions in double-quoted strings.
 
-Example:
+Examples:
 
-    say "normal ${ Red } red ${ Reset }";
+    say "normal ${ +Red } red ${ +Reset }";
+    say "normal ${ Red + Bold } red ${ +Reset }";
 
-=item C<&{}> (code dereference, or "codulation")
+Note that you must force expression parsing context when a Chrome constant is
+used alone inside C<${ }>: C<${ +Red }> or C<${ (Red) } or C<${ Red() }>.
+C<use strict 'vars';> will detect those cases, but you may miss them in
+one-liners.
+
+=item C<&{}> (code dereference, or I<codulation>)
 
 Wrap some text with the given chrome and C<Reset>.
 
@@ -199,8 +205,9 @@ On perl < 5.21.4 you have to wrap the chrome constant in a C<do {}>:
 
     say do{ Red }->("red text");
 
-This can also be used to extract a colorizer sub that will be more efficient
-if you reuse it:
+
+Codulation can also be used to extract a colorizer sub that will be more
+efficient if you use it multiple times:
 
     my $redifier = \&{ Red };
     say $redifier->("red text");
@@ -209,7 +216,7 @@ if you reuse it:
 
 =head1 BUGS
 
-See the warning about C<&{}> above.
+See the warnings about C<${}> and C<&{}> above.
 
 =head1 SEE ALSO
 
@@ -241,7 +248,7 @@ the C<angel-PS1> compiler has special support for C<Term::Chrome> values.
 
 =head1 TRIVIA
 
-Did you know that I<chartreuse> is one of the favorite color of Larry Wall?
+Did you know that I<chartreuse> is one of the favorite colors of Larry Wall?
 
 =head1 AUTHOR
 
