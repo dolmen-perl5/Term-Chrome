@@ -260,7 +260,7 @@ Did you know that I<chartreuse> is one of the favorite colors of Larry Wall?
 
 =head1 AUTHOR
 
-Olivier MenguE<eacute>, L<mailto:dolmen@cpan.org>
+Olivier MenguE<eacute> <dolmen@cpan.org>
 
 =head1 COPYRIGHT & LICENSE
 

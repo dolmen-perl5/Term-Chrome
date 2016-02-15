@@ -182,7 +182,7 @@ Did you know that _chartreuse_ is one of the favorite colors of Larry Wall?
 
 # AUTHOR
 
-Olivier Mengué, [mailto:dolmen@cpan.org](mailto:dolmen@cpan.org)
+Olivier Mengué <dolmen@cpan.org>
 
 # COPYRIGHT & LICENSE
 
