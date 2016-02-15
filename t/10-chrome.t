@@ -40,12 +40,14 @@ is($YellowBlue->("Text"),
     "\e[;7;34;43mText\e[m",
     "(Blue / Yellow + Reset + Reverse) but using code deref");
 
+# Codulation using literals
 is(&{+Blue}("Text"),
     "\e[34mText\e[m",
     "Blue but using code deref");
 is(&{ Blue / Magenta }("Text"),
     "\e[34;45mText\e[m",
     "(Blue / Magenta) but using code deref");
+
 # Direct usage of codulation doesn't work below perl 5.21.4
 # See t/12-codulation.t
 #
