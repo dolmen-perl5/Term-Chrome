@@ -15,15 +15,19 @@ use warnings;
 # Fortunately, Father Chrysostomos fixed the issue.
 
 use Test::Is 'perl 5.21.4';
-use Test::More tests => 2;
+use Test::More tests => 3;
 
 use Term::Chrome;
 
 my $YellowBlue = Blue / Yellow + Reset + Reverse;
 is($YellowBlue->("Text"),
     "\e[;7;34;43mText\e[m",
-    "(Blue / Yellow + Reset + Reverse) but using code deref");
+    "(Blue / Yellow + Reset + Reverse) but using code deref with a variable");
+
+is(&{Blue / Yellow + Reset + Reverse}("Text"),
+    "\e[;7;34;43mText\e[m",
+    "(Blue / Yellow + Reset + Reverse) but using code deref with &");
 
 is((Blue / Yellow + Reset + Reverse)->("Text"),
     "\e[;7;34;43mText\e[m",
-    "(Blue / Yellow + Reset + Reverse) but using code deref, directly (perl RT 122607)");
+    "(Blue / Yellow + Reset + Reverse) but using code deref with ->, directly (perl RT 122607)");

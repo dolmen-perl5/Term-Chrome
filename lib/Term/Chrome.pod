@@ -27,11 +27,19 @@ Term::Chrome - DSL for colors and other terminal chrome
     # Extract components
     say( (Red/Blue)->bg, "blue text", (Green+Reset)->flags );
 
-    # Get an efficient chromizer sub (applies given chrome before, and
-    # Reset after the argument)
+Chromizer: get a closure that applies given chrome before, and C<Reset> after
+the argument.
+
+    # Get an efficient chromizer
     my $boldifier = \&{ +Bold };
     # Use the chromizer
     say $boldifier->("bold text");
+
+    # Short lived chromizers using color literals:
+    say &{+Red}('red');
+    say &{ Red/Blue + Bold }('red on blue');
+    # Same, but requires perl 5.21.4+
+    #say(( Red/Blue + Bold )->('red on blue'));
 
 =head1 DESCRIPTION
 
