@@ -118,11 +118,17 @@ Here are the methods on `Term::Chrome` objects:
     Same result as `""` (stringification). This operator is overloaded because
     it is convenient to interpolate Chrome expressions in double-quoted strings.
 
-    Example:
+    Examples:
 
-        say "normal ${ Red } red ${ Reset }";
+        say "normal ${ +Red } red ${ +Reset }";
+        say "normal ${ Red + Bold } red ${ +Reset }";
 
-- `&{}` (code dereference, or "codulation")
+    Note that you must force expression parsing context when a Chrome constant is
+    used alone inside `${ }`: `${ +Red }` or `${ (Red) }` or `${ Red() }`.
+    `use strict 'vars';` will detect those cases, but you may miss them in
+    one-liners.
+
+- `&{}` (code dereference, or _codulation_)
 
     Wrap some text with the given chrome and `Reset`.
 
@@ -139,15 +145,15 @@ Here are the methods on `Term::Chrome` objects:
 
         say do{ Red }->("red text");
 
-    This can also be used to extract a colorizer sub that will be more efficient
-    if you reuse it:
+    Codulation can also be used to extract a colorizer sub that will be more
+    efficient if you use it multiple times:
 
         my $redifier = \&{ Red };
         say $redifier->("red text");
 
 # BUGS
 
-See the warning about `&{}` above.
+See the warnings about `${}` and `&{}` above.
 
 # SEE ALSO
 
@@ -164,7 +170,7 @@ the `angel-PS1` compiler has special support for `Term::Chrome` values.
 
 # TRIVIA
 
-Did you know that _chartreuse_ is one of the favorite color of Larry Wall?
+Did you know that _chartreuse_ is one of the favorite colors of Larry Wall?
 
 # AUTHOR
 
