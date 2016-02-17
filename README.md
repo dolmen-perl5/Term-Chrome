@@ -5,7 +5,6 @@ Term::Chrome - DSL for colors and other terminal chrome
 # SYNOPSIS
 
     use Term::Chrome qw<Red Blue Bold Reset Underline Green color>;
-    use feature qw<say>; # Just for this example
 
     # Base color constant and attribute
     say Red, 'red text', Reset;
@@ -34,8 +33,8 @@ the argument.
     say $boldifier->("bold text");
 
     # Short lived chromizers using color literals:
-    say &{+Red}('red');
-    say &{ Red/Blue + Bold }('red on blue');
+    say(&{+Red}('red'));
+    say(&{ Red/Blue + Bold }('red on blue'));
     # Same, but requires perl 5.21.4+
     #say(( Red/Blue + Bold )->('red on blue'));
 
