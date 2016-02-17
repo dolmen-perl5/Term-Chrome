@@ -1,6 +1,8 @@
 Revision history for Term-Chrome
 
 {{$NEXT}}
+
+1.013  2016-02-17 21:58:41 CET
 	- Improved doc for ${} and &{} overloading
 	- Test::Synopsis is now an *optional* test dependency
 	- Dédicace spéciale à Andéol !
