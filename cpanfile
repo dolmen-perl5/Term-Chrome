@@ -12,7 +12,7 @@ on test => sub {
 };
 
 on develop => sub {
-    requires 'Dist::Milla' => v1.0.15;
+    requires 'Dist::Milla' => 'v1.0.15';
 
     requires 'Test::Requires' => '0.07'; # Features RELEASE_TESTING
     requires 'Test::Synopsis' => '0.14';
