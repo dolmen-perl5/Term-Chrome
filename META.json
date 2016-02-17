@@ -32,6 +32,7 @@
       "develop" : {
          "requires" : {
             "Dist::Milla" : "v1.0.15",
+            "Dist::Zilla" : "5.043",
             "Dist::Zilla::Plugin::LicenseFromModule" : "0.05",
             "Dist::Zilla::Plugin::ReadmeAnyFromPod" : "0.142470",
             "Test::Pod" : "1.41",

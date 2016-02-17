@@ -12,6 +12,7 @@ on test => sub {
 };
 
 on develop => sub {
+    requires 'Dist::Zilla' => '5.043'; # Required for extended testing with 'dzil test --all'
     requires 'Dist::Milla' => 'v1.0.15';
 
     requires 'Test::Requires' => '0.07'; # Features RELEASE_TESTING
