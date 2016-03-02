@@ -16,6 +16,7 @@ use Exporter 5.57 'import';  # perl 5.8.3
 # @EXPORT is defined at the end
 
 use Carp ();
+use Scalar::Util ();
 our @CARP_NOT = qw< Term::Chrome::Color >;
 
 # Private constructor for Term::Chrome objects. Lexical, so cross-packages.
@@ -182,13 +183,13 @@ our @ISA = qw< Term::Chrome >;
 
 use overload
     '!'   => '_reverse',
+    '+'   => '_plus',
     # Even if overloading is set in the super class, we have to repeat it for old perls
     (
         $^V ge v5.18.0
         ? ()
         : (
             '""'  => \&Term::Chrome::term,
-            '+'   => \&Term::Chrome::_plus,
             '${}' => \&Term::Chrome::_deref,
             '.'   => \&Term::Chrome::_concat,
         )
@@ -199,7 +200,30 @@ use overload
 sub _reverse
 {
     my $self = shift;
-    Term::Chrome::Flag->$new(undef, undef, map { $_ > 20 ? $_-20 : $_+20 } @{$self}[2..$#$self])
+    __PACKAGE__->$new(undef, undef, map { $_ > 20 ? $_-20 : $_+20 } @{$self}[2..$#$self])
+}
+
+sub _plus
+{
+    my ($self, $other, $swap) = @_;
+
+    return $self unless defined $other;
+
+    Carp::croak(q{Can't combine Term::Chrome with }.$other)
+        unless Scalar::Util::blessed $other;
+
+    if ($other->isa(__PACKAGE__)) {
+        # Reset
+        return $other if !$other->[2];
+        # ResetFlags
+        return $other if $other->[2] == 22;
+        # Concat flags
+        __PACKAGE__->$new(@$self, @{$other}[2..$#$other])
+    } elsif ($other->isa(Term::Chrome::)) {
+        $other->_plus($self, '')
+    } else {
+        Carp::croak(q{Can't combine Term::Chrome with }.ref($other))
+    }
 }
 
 

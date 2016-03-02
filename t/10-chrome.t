@@ -2,7 +2,7 @@
 use strict;
 use warnings FATAL => 'all';
 
-use Test::More 0.98 tests => 38;
+use Test::More 0.98 tests => 49;
 use Term::Chrome;
 use Scalar::Util 'refaddr';
 
@@ -12,7 +12,21 @@ is((!Bold)->term, "\e[21m", '!Bold');
 note(join('', "[Not bold] ", Bold, "[Bold]", !Bold, " [Not bold]"));
 isa_ok(Red, 'Term::Chrome', 'Red');
 isa_ok(Bold, 'Term::Chrome', 'Bold');
-isa_ok(!Bold, 'Term::Chrome', 'Bold');
+isa_ok(!Bold, 'Term::Chrome', '!Bold');
+
+isa_ok(Reset + Bold, Term::Chrome::, 'Reset+Bold');
+isa_ok(Bold + Reset, Term::Chrome::, 'Bold+Reset');
+isa_ok(Bold + Underline, Term::Chrome::, 'Bold+Underline');
+isa_ok(Underline + Bold, Term::Chrome::, 'Underline+Bold');
+# (Any flag + Reset) collapses to Reset
+is((Bold + Reset)->term, Reset->term);
+is((Bold + Underline + Reset)->term, Reset->term);
+# Idem for ResetFlags
+is((Bold + ResetFlags)->term, ResetFlags->term);
+is((Bold + Underline + ResetFlags)->term, ResetFlags->term);
+# But flags on right side of Reset are preserved
+is((Reset + Bold)->term, "\e[;1m");
+is((Reset + Bold + Underline)->term, "\e[;1;4m");
 
 my $BoldRed = Red + Bold;
 ok(defined($BoldRed),'Red+Bold defined');
@@ -22,6 +36,9 @@ isa_ok($BoldRed, 'Term::Chrome', 'Red+Bold')
 is($BoldRed->term,   "\e[1;31m", 'Red+Bold->term');
 is((Red+Bold)->term, "\e[1;31m", 'Red+Bold->term');
 is("$BoldRed",       "\e[1;31m", "Red+Bold stringification");
+
+cmp_ok((Bold + Red)->term, 'eq', $BoldRed->term, '(Bold + Red) eq (Red + Bold)');
+
 
 note("@{[ Blue / Yellow + Reset + Reverse ]}Text@{[ Reset ]}");
 is("@{[ Blue / Yellow + Reset + Reverse ]}Text@{[ Reset ]}",
