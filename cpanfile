@@ -3,6 +3,7 @@
 requires 'perl', '5.008005';
 
 requires 'Exporter', '5.57';
+requires 'Scalar::Util'; # In core since 5.7.3
 
 on test => sub {
     requires 'Test::More', '0.96';
