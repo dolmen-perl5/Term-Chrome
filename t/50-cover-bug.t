@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 
-use Term::Chrome qw< Red >;
+use Term::Chrome qw< Red Bold >;
 
 print <<EOF;
 1..1
@@ -14,5 +14,14 @@ print <<EOF;
 EOF
 
 my $c = undef || Red;   # <---- failure here
+$c = undef || (Red+Bold);
+my ($undef, %undef);
+my $e = $undef || Red;
+my $f = $undef || (Red+Bold);
+my $g = $undef{'foo'} || Red;
+my $h = $undef{'foo'} || (Red + Bold);
+
+my $undef_hash = {};
+my $i = $undef_hash->{'foo'} || (Red + Bold);
 
 print "ok 1\n";
