@@ -175,6 +175,34 @@ sub _over
     Term::Chrome->$new($_[0]->[0], $_[1]->[0])
 }
 
+package # no index: private package
+    Term::Chrome::Flag;
+
+our @ISA = qw< Term::Chrome >;
+
+use overload
+    '!'   => '_reverse',
+    # Even if overloading is set in the super class, we have to repeat it for old perls
+    (
+        $^V ge v5.18.0
+        ? ()
+        : (
+            '""'  => \&Term::Chrome::term,
+            '+'   => \&Term::Chrome::_plus,
+            '${}' => \&Term::Chrome::_deref,
+            '.'   => \&Term::Chrome::_concat,
+        )
+    ),
+    fallback => 0,
+;
+
+sub _reverse
+{
+    my $self = shift;
+    Term::Chrome::Flag->$new(undef, undef, map { $_ > 20 ? $_-20 : $_+20 } @{$self}[2..$#$self])
+}
+
+
 package
     Term::Chrome;
 
@@ -185,7 +213,7 @@ package
 # due to a bug in perl < 5.18
 # (according to a comment in Types::Serialiser source)
 
-my $mk_flag = sub { __PACKAGE__->$new(undef, undef, $_[0]) };
+my $mk_flag = sub { Term::Chrome::Flag->$new(undef, undef, $_[0]) };
 
 my %const = (
     Reset      => $mk_flag->(''),

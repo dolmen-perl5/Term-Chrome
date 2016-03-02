@@ -2,14 +2,17 @@
 use strict;
 use warnings FATAL => 'all';
 
-use Test::More 0.98 tests => 36;
+use Test::More 0.98 tests => 38;
 use Term::Chrome;
 use Scalar::Util 'refaddr';
 
 is(Red->term, "\e[31m", 'Red');
 is(Bold->term, "\e[1m", 'Bold');
+is((!Bold)->term, "\e[21m", '!Bold');
+note(join('', "[Not bold] ", Bold, "[Bold]", !Bold, " [Not bold]"));
 isa_ok(Red, 'Term::Chrome', 'Red');
 isa_ok(Bold, 'Term::Chrome', 'Bold');
+isa_ok(!Bold, 'Term::Chrome', 'Bold');
 
 my $BoldRed = Red + Bold;
 ok(defined($BoldRed),'Red+Bold defined');
