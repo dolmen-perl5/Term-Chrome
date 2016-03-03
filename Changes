@@ -1,6 +1,14 @@
 Revision history for Term-Chrome
 
 {{$NEXT}}
+	- Add '!' operator overloading to reverse a chrome:
+           - !Bold means 'unbold',
+           - !Reset is a no-op,
+	   - !Red means 'reset foreground color',
+           - !(Red/Blue) means 'reset foreground and background colors'
+	- Chromizers: after the text, reverse the chrome instead of
+	  applying a full "Reset" of the chrome. This is a BREAKING CHANGE
+	  as the stringification is changing, but it is more DWIM.
 
 1.013  2016-02-17 21:58:41 CET
 	- Improved doc for ${} and &{} overloading
