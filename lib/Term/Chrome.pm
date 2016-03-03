@@ -129,19 +129,17 @@ sub _concat
 }
 
 
-# Stringified Reset constant for use in chromizers
-# (the value is set at the end of this source)
-my $Reset_str;
-
 sub _chromizer
 {
-    my $chrome_str = shift->term;
+    my $self = shift;
+    my $begin = $self->term;
+    my $end = $self->_reverse->term;
     sub {
         unless (defined $_[0]) {
             Carp::carp "missing argument in Term::Chrome chromizer";
             return
         }
-        $chrome_str . $_[0] . $Reset_str
+        $begin . $_[0] . $end
     }
 }
 
@@ -291,9 +289,6 @@ our @EXPORT = ('color', keys %const);
 # This does not seem necessary anymore.
 require constant;
 constant->import(\%const);
-
-# See $Reset_str declaration above
-$Reset_str = $const{Reset}->term;
 
 1;
 # vim:set et ts=8 sw=4 sts=4:

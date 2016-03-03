@@ -21,13 +21,13 @@ use Term::Chrome;
 
 my $YellowBlue = Blue / Yellow + Reset + Reverse;
 is($YellowBlue->("Text"),
-    "\e[;7;34;43mText\e[m",
+    "\e[;7;34;43mText\e[39;49;27m",
     "(Blue / Yellow + Reset + Reverse) but using code deref with a variable");
 
 is(&{Blue / Yellow + Reset + Reverse}("Text"),
-    "\e[;7;34;43mText\e[m",
+    "\e[;7;34;43mText\e[39;49;27m",
     "(Blue / Yellow + Reset + Reverse) but using code deref with &");
 
 is((Blue / Yellow + Reset + Reverse)->("Text"),
-    "\e[;7;34;43mText\e[m",
+    "\e[;7;34;43mText\e[39;49;27m",
     "(Blue / Yellow + Reset + Reverse) but using code deref with ->, directly (perl RT 122607)");
