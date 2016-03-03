@@ -63,6 +63,7 @@ use overload
     '${}' => '_deref',
     '&{}' => '_chromizer',
     '.'   => '_concat',
+    '!'   => '_reverse',
     fallback => 0,
 ;
 
@@ -81,6 +82,8 @@ sub term
         }
         #                                      -------> "48:5:$bg"
         $r .= $bg < 8 ? (40+$bg) : $bg < 16 ? "10$bg" : "48;5;$bg" if defined $bg;
+    } else {
+        return '' unless @$self > 2
     }
     "\e[${r}m"
 }
@@ -100,6 +103,18 @@ sub _plus
     push @new, @{$other}[2 .. $#$other];
 
     bless \@new
+}
+
+sub _reverse
+{
+    my $self = shift;
+    my @new = (undef, undef);
+    push @new, 39 if $self->[0]; # ResetFg
+    push @new, 49 if $self->[1]; # ResetBg
+    # Reset/ResetFlags/ResetFg/ResetBg are removed
+    # Other flags are reversed
+    push @new, map { (!$_ || $_ == 22 || $_ > 30) ? () : ($_ > 20 ? $_-20 : $_+20) } @{$self}[2..$#$self];
+    bless \@new, 'Term::Chrome::Flag'
 }
 
 sub _deref
@@ -165,6 +180,7 @@ use overload
             '+'   => \&Term::Chrome::_plus,
             '${}' => \&Term::Chrome::_deref,
             '.'   => \&Term::Chrome::_concat,
+            '!'   => \&Term::Chrome::_reverse,
         )
     ),
     fallback => 0,
@@ -182,8 +198,8 @@ package # no index: private package
 our @ISA = qw< Term::Chrome >;
 
 use overload
-    '!'   => '_reverse',
     '+'   => '_plus',
+    '!'   => '_reverse',
     # Even if overloading is set in the super class, we have to repeat it for old perls
     (
         $^V ge v5.18.0
@@ -200,7 +216,11 @@ use overload
 sub _reverse
 {
     my $self = shift;
-    __PACKAGE__->$new(undef, undef, map { $_ > 20 ? $_-20 : $_+20 } @{$self}[2..$#$self])
+    bless [
+        undef, undef,
+        # Reset/ResetFlags/ResetFg/ResetBg are removed
+        map { (!$_ || $_ == 22 || $_ > 30) ? () : ($_ > 20 ? $_-20 : $_+20) } @{$self}[2..$#$self]
+    ]
 }
 
 sub _plus

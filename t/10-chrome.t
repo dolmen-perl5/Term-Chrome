@@ -2,7 +2,7 @@
 use strict;
 use warnings FATAL => 'all';
 
-use Test::More 0.98 tests => 49;
+use Test::More 0.98 tests => 59;
 use Term::Chrome;
 use Scalar::Util 'refaddr';
 
@@ -28,6 +28,7 @@ is((Bold + Underline + ResetFlags)->term, ResetFlags->term);
 is((Reset + Bold)->term, "\e[;1m");
 is((Reset + Bold + Underline)->term, "\e[;1;4m");
 
+
 my $BoldRed = Red + Bold;
 ok(defined($BoldRed),'Red+Bold defined');
 is(ref($BoldRed), 'Term::Chrome', 'ref(Red+Bold)');
@@ -39,6 +40,19 @@ is("$BoldRed",       "\e[1;31m", "Red+Bold stringification");
 
 cmp_ok((Bold + Red)->term, 'eq', $BoldRed->term, '(Bold + Red) eq (Red + Bold)');
 
+# The reverse of a reset flag is nothing
+is((!Reset)->term, '');
+is((!ResetFg)->term, '');
+is((!ResetBg)->term, '');
+is((!ResetFlags)->term, '');
+
+is((!Bold)->term, "\e[21m");
+is((!(Bold+Underline))->term, "\e[21;24m");
+is((!Red)->term, ResetFg->term);
+is((!(Red/Blue))->term, (ResetFg+ResetBg)->term);
+is((!(Red/Blue+Bold))->term, (ResetFg+ResetBg+!Bold)->term);
+is((!(Red/Blue+Reset+Bold))->term, (ResetFg+ResetBg+!Bold)->term);
+
 
 note("@{[ Blue / Yellow + Reset + Reverse ]}Text@{[ Reset ]}");
 is("@{[ Blue / Yellow + Reset + Reverse ]}Text@{[ Reset ]}",
@@ -49,6 +63,7 @@ is("${ Red+Bold }", "\e[1;31m", 'deref: ${ Red+Bold }');
 is("${ +Red }", "\e[31m", 'deref: ${ +Red }');
 is("${( Red )}", "\e[31m", 'deref: ${( Red )}');
 note("normal ${ Red+Bold } RED ${ +Reset } normal");
+note("normal $BoldRed RED ${ !$BoldRed } normal");
 note ref(Blue / Yellow + Reset + Reverse);
 
 
