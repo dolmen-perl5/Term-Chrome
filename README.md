@@ -12,6 +12,9 @@ Term::Chrome - DSL for colors and other terminal chrome
     # Composition, using operator overloading
     say Red/Blue+Bold, 'red on blue', Reset;
 
+    # Undo
+    say Bold, 'bold', !Bold, 'not bold';
+
     # Extended xterm-256 colors
     say color(125) + Underline, 'Purple', Reset;
 
@@ -24,13 +27,15 @@ Term::Chrome - DSL for colors and other terminal chrome
     # Extract components
     say( (Red/Blue)->bg, "blue text", (Green+Reset)->flags );
 
-Chromizer: get a closure that applies given chrome before, and `Reset` after
+Chromizer: get a closure that applies given chrome before, and undo after
 the argument.
 
     # Get an efficient chromizer
     my $boldifier = \&{ +Bold };
     # Use the chromizer
     say $boldifier->("bold text");
+    # Same as:
+    say Bold, "bold text", !Bold;
 
     # Short lived chromizers using color literals:
     say(&{+Red}('red'));

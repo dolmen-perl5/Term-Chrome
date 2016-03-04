@@ -16,6 +16,7 @@ use Exporter 5.57 'import';  # perl 5.8.3
 # @EXPORT is defined at the end
 
 use Carp ();
+use Scalar::Util ();
 our @CARP_NOT = qw< Term::Chrome::Color >;
 
 # Private constructor for Term::Chrome objects. Lexical, so cross-packages.
@@ -62,6 +63,7 @@ use overload
     '${}' => '_deref',
     '&{}' => '_chromizer',
     '.'   => '_concat',
+    '!'   => '_reverse',
     fallback => 0,
 ;
 
@@ -80,6 +82,8 @@ sub term
         }
         #                                      -------> "48:5:$bg"
         $r .= $bg < 8 ? (40+$bg) : $bg < 16 ? "10$bg" : "48;5;$bg" if defined $bg;
+    } else {
+        return '' unless @$self > 2
     }
     "\e[${r}m"
 }
@@ -101,6 +105,18 @@ sub _plus
     bless \@new
 }
 
+sub _reverse
+{
+    my $self = shift;
+    my @new = (undef, undef);
+    push @new, 39 if $self->[0]; # ResetFg
+    push @new, 49 if $self->[1]; # ResetBg
+    # Reset/ResetFlags/ResetFg/ResetBg are removed
+    # Other flags are reversed
+    push @new, map { (!$_ || $_ == 22 || $_ > 30) ? () : ($_ > 20 ? $_-20 : $_+20) } @{$self}[2..$#$self];
+    bless \@new, 'Term::Chrome::Flag'
+}
+
 sub _deref
 {
     \("$_[0]")
@@ -113,19 +129,17 @@ sub _concat
 }
 
 
-# Stringified Reset constant for use in chromizers
-# (the value is set at the end of this source)
-my $Reset_str;
-
 sub _chromizer
 {
-    my $chrome_str = shift->term;
+    my $self = shift;
+    my $begin = $self->term;
+    my $end = $self->_reverse->term;
     sub {
         unless (defined $_[0]) {
             Carp::carp "missing argument in Term::Chrome chromizer";
             return
         }
-        $chrome_str . $_[0] . $Reset_str
+        $begin . $_[0] . $end
     }
 }
 
@@ -164,6 +178,7 @@ use overload
             '+'   => \&Term::Chrome::_plus,
             '${}' => \&Term::Chrome::_deref,
             '.'   => \&Term::Chrome::_concat,
+            '!'   => \&Term::Chrome::_reverse,
         )
     ),
     fallback => 0,
@@ -175,6 +190,61 @@ sub _over
     Term::Chrome->$new($_[0]->[0], $_[1]->[0])
 }
 
+package # no index: private package
+    Term::Chrome::Flag;
+
+our @ISA = qw< Term::Chrome >;
+
+use overload
+    '+'   => '_plus',
+    '!'   => '_reverse',
+    # Even if overloading is set in the super class, we have to repeat it for old perls
+    (
+        $^V ge v5.18.0
+        ? ()
+        : (
+            '""'  => \&Term::Chrome::term,
+            '${}' => \&Term::Chrome::_deref,
+            '.'   => \&Term::Chrome::_concat,
+        )
+    ),
+    fallback => 0,
+;
+
+sub _reverse
+{
+    my $self = shift;
+    bless [
+        undef, undef,
+        # Reset/ResetFlags/ResetFg/ResetBg are removed
+        map { (!$_ || $_ == 22 || $_ > 30) ? () : ($_ > 20 ? $_-20 : $_+20) } @{$self}[2..$#$self]
+    ]
+}
+
+sub _plus
+{
+    my ($self, $other, $swap) = @_;
+
+    return $self unless defined $other;
+
+    Carp::croak(q{Can't combine Term::Chrome with }.$other)
+        unless Scalar::Util::blessed $other;
+
+    if ($other->isa(__PACKAGE__)) {
+        # Reset
+        return $other if !$other->[2];
+        # ResetFlags
+        return $other if $other->[2] == 22;
+        # Concat flags
+        __PACKAGE__->$new(@$self, @{$other}[2..$#$other])
+    } elsif ($other->isa(Term::Chrome::)) {
+        $other->_plus($self, '')
+    } else {
+        Carp::croak(q{Can't combine Term::Chrome with }.ref($other))
+    }
+}
+
+
 package
     Term::Chrome;
 
@@ -185,7 +255,7 @@ package
 # due to a bug in perl < 5.18
 # (according to a comment in Types::Serialiser source)
 
-my $mk_flag = sub { __PACKAGE__->$new(undef, undef, $_[0]) };
+my $mk_flag = sub { Term::Chrome::Flag->$new(undef, undef, $_[0]) };
 
 my %const = (
     Reset      => $mk_flag->(''),
@@ -219,9 +289,6 @@ our @EXPORT = ('color', keys %const);
 # This does not seem necessary anymore.
 require constant;
 constant->import(\%const);
-
-# See $Reset_str declaration above
-$Reset_str = $const{Reset}->term;
 
 1;
 # vim:set et ts=8 sw=4 sts=4:
