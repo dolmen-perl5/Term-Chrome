@@ -1,6 +1,8 @@
 Revision history for Term-Chrome
 
 {{$NEXT}}
+
+2.00  2016-03-04 01:17:31 CET
 	- Add '!' operator overloading to reverse a chrome:
            - !Bold means 'unbold',
            - !Reset is a no-op,
