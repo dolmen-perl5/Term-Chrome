@@ -64,6 +64,7 @@ use overload
     '&{}' => '_chromizer',
     '.'   => '_concat',
     '!'   => '_reverse',
+    'bool' => sub () { 1 },
     fallback => 0,
 ;
 
@@ -179,6 +180,7 @@ use overload
             '${}' => \&Term::Chrome::_deref,
             '.'   => \&Term::Chrome::_concat,
             '!'   => \&Term::Chrome::_reverse,
+            'bool' => sub () { 1 },
         )
     ),
     fallback => 0,
@@ -206,6 +208,7 @@ use overload
             '""'  => \&Term::Chrome::term,
             '${}' => \&Term::Chrome::_deref,
             '.'   => \&Term::Chrome::_concat,
+            'bool' => sub () { 1 },
         )
     ),
     fallback => 0,

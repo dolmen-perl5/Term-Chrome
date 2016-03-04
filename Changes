@@ -9,6 +9,10 @@ Revision history for Term-Chrome
 	- Chromizers: after the text, reverse the chrome instead of
 	  applying a full "Reset" of the chrome. This is a BREAKING CHANGE
 	  as the stringification is changing, but it is more DWIM.
+	- Add 'bool' operator overloading. This allows to use '||' to set a
+	  default value:   $chrome ||= Red;
+	  (this was already working without the explicit overloading, except
+	  under Devel::Cover, see t/50-cover-bug.t)
 
 1.013  2016-02-17 21:58:41 CET
 	- Improved doc for ${} and &{} overloading
