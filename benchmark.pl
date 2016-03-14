@@ -37,11 +37,17 @@ my %bench = (
 );
 
 my $Redifier = \&{+Red};
-for my $name (keys %bench) {
-    my $result = $bench{$name}->();
-    $result =~ s/\e(\[.*?[a-zA-Z])/$Redifier->("\\e$1")/ge;
-    printf "%s:\n%s\n", $name, $result
+sub dump_bench
+{
+    for my $name (sort keys %bench) {
+	my $result = $bench{$name}->();
+	$result =~ s/\e(\[.*?[a-zA-Z])/$Redifier->("\\e$1")/ge;
+	printf "%s:\n%s\n", $name, $result
+    }
 }
+
+dump_bench;
+
 cmpthese(2000000, \%bench);
 
 %bench = (
@@ -52,6 +58,7 @@ cmpthese(2000000, \%bench);
 	join('', RED BOLD ON_BLUE "Bold red on blue.", RESET)
     },
 );
-print $_->(), "\n" for values %bench;
+dump_bench;
+
 cmpthese(2000000, \%bench);
 
