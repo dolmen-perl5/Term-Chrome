@@ -30,9 +30,8 @@ my %bench = (
     'ANSIColor constants' => sub {
 	join('', YELLOW ON_MAGENTA "Yellow on magenta $s", RESET)
     },
-    # This does not seem to work properly (no reset in output)
     'ANSIColor autoreset' => sub {
-	local $Term::ANSICOlor::AUTORESET = 1;
+	local $Term::ANSIColor::AUTORESET = 1;
 	YELLOW ON_MAGENTA "Yellow on magenta $s"
     },
 );
