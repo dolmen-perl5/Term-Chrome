@@ -36,7 +36,7 @@ my %bench = (
     },
 );
 
-my $Redifier = &{Red};
+my $Redifier = \&{+Red};
 for my $name (keys %bench) {
     my $result = $bench{$name}->();
     $result =~ s/\e(\[.*?[a-zA-Z])/$Redifier->("\\e$1")/ge;
