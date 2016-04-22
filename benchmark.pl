@@ -54,8 +54,28 @@ cmpthese(2000000, \%bench);
     'Chrome constants' => sub {
 	join('', Red / Blue + Bold, "Bold red on blue.", Reset)
     },
+    'Chrome constants in string' => sub {
+	"${ Red / Blue + Bold }Bold red on blue.${ +Reset }"
+    },
+    'Pre-combined chrome constants' => do {
+	my $RedBlue = Red / Blue + Bold;
+
+	sub {
+	    "${RedBlue}Bold red on blue.${ +Reset }"
+	}
+    },
+    'Pre-stringified chrome constants' => do {
+	my $RedBlue = "${ Red / Blue + Bold }";
+
+	sub {
+	    "${RedBlue}Bold red on blue.${ +Reset }"
+	}
+    },
     'ANSIColor constants' => sub {
 	join('', RED BOLD ON_BLUE "Bold red on blue.", RESET)
+    },
+    'ANSIColor color()' => sub {
+	join('', Term::ANSIColor::color('bold red on_blue'), "Bold red on blue.", Term::ANSIColor::color('reset'))
     },
 );
 dump_bench;
