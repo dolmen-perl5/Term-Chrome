@@ -153,7 +153,19 @@ C<Reverse>
 
 =item *
 
-C<Reset> : reset all colors and flags
+C<Reset>: reset all colors and flags
+
+=item *
+
+C<ResetFlags>: reset (undo) all chrome flags (Bold, Underline, Blink, Reverse)
+
+=item *
+
+C<ResetFg>: reset (undo) foreground color
+
+=item *
+
+C<ResetBg>: reset (undo) background color
 
 =back
 
@@ -183,15 +195,32 @@ Extract a Chrome object of just the decoration flags. Maybe C<undef>.
 
 =item C</> (mnemonic: "over")
 
-Conmbine a foreground color (on the left) with a background color.
+Combine a foreground color (on the left) with a background color.
+
+Example:
+
+    my $red_on_black = Red / Black;
 
 =item C<+>
 
 Add decoration flags (on the right) to colors (on the left).
 
+Example:
+
+    my $bold_red = Red + Bold;
+
+=item C<!> (negation)
+
+Returns a chrome which is the reverse of chrome to which negation is applied.
+
+    my $reset_foreground = ! Red;
+    my $reset_colors = ! (Red / Black);
+
+The reverse of C<Reset>, C<ResetFg>, C<ResetBg>, C<ResetFlags> is nothing.
+
 =item C<""> (stringification)
 
-Transform the object into a sting of ANSI sequences. This is
+Transform the object into a string of ANSI sequences. This is
 particularly useful to directly use a Chrome object in a double quoted string.
 
 =item C<${}> (scalar dereference)
