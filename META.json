@@ -61,13 +61,13 @@
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/dolmen/p5-Term-Chrome/issues"
+         "web" : "https://github.com/dolmen-perl5/Term-Chrome/issues"
       },
-      "homepage" : "https://github.com/dolmen/p5-Term-Chrome",
+      "homepage" : "https://github.com/dolmen-perl5/Term-Chrome",
       "repository" : {
          "type" : "git",
-         "url" : "https://github.com/dolmen/p5-Term-Chrome.git",
-         "web" : "https://github.com/dolmen/p5-Term-Chrome"
+         "url" : "https://github.com/dolmen-perl5/Term-Chrome.git",
+         "web" : "https://github.com/dolmen-perl5/Term-Chrome"
       }
    },
    "version" : "2.00",
