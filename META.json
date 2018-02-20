@@ -70,7 +70,7 @@
          "web" : "https://github.com/dolmen-perl5/Term-Chrome"
       }
    },
-   "version" : "2.00",
+   "version" : "2.01",
    "x_serialization_backend" : "Cpanel::JSON::XS version 4.01"
 }
 

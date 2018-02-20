@@ -1,6 +1,8 @@
 Revision history for Term-Chrome
 
 {{$NEXT}}
+
+2.01  2018-02-20 23:40:44 CET
 	- Fix reverse of Reset and attribute flags
 	- Improve documentation of Reset flags
 	- Repository moved to github.com/dolmen-perl5/Term-Chrome
