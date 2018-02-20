@@ -92,7 +92,10 @@ them. For example `Underline` and `Blink` may do nothing.
 
 ## Special flags
 
-- `Reset` : reset all colors and flags
+- `Reset`: reset all colors and flags
+- `ResetFlags`: reset (undo) all chrome flags (Bold, Underline, Blink, Reverse)
+- `ResetFg`: reset (undo) foreground color
+- `ResetBg`: reset (undo) background color
 
 # METHODS
 
@@ -114,15 +117,32 @@ Here are the methods on `Term::Chrome` objects:
 
 - `/` (mnemonic: "over")
 
-    Conmbine a foreground color (on the left) with a background color.
+    Combine a foreground color (on the left) with a background color.
+
+    Example:
+
+        my $red_on_black = Red / Black;
 
 - `+`
 
     Add decoration flags (on the right) to colors (on the left).
 
+    Example:
+
+        my $bold_red = Red + Bold;
+
+- `!` (negation)
+
+    Returns a chrome which is the reverse of chrome to which negation is applied.
+
+        my $reset_foreground = ! Red;
+        my $reset_colors = ! (Red / Black);
+
+    The reverse of `Reset`, `ResetFg`, `ResetBg`, `ResetFlags` is nothing.
+
 - `""` (stringification)
 
-    Transform the object into a sting of ANSI sequences. This is
+    Transform the object into a string of ANSI sequences. This is
     particularly useful to directly use a Chrome object in a double quoted string.
 
 - `${}` (scalar dereference)
