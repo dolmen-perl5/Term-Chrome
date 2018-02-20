@@ -3,7 +3,6 @@ use strict;
 use warnings FATAL => 'all';
 
 use Test::More 0.98 tests => 62;
-use Test::BinaryData;
 use Term::Chrome;
 use Scalar::Util 'refaddr';
 
@@ -54,8 +53,8 @@ is((!Bold)->term, "\e[22m");
 is((!(Bold+Underline))->term, "\e[22;24m");
 is((!Red)->term, ResetFg->term);
 is((!(Red/Blue))->term, (ResetFg+ResetBg)->term);
-is_binary((!(Red/Blue+Bold))->term, (ResetFg+ResetBg+!Bold)->term);
-is_binary((!(Red/Blue+Reset+Bold))->term, (ResetFg+ResetBg+!Bold)->term);
+is((!(Red/Blue+Bold))->term, (ResetFg+ResetBg+!Bold)->term);
+is((!(Red/Blue+Reset+Bold))->term, (ResetFg+ResetBg+!Bold)->term);
 
 
 note("@{[ Blue / Yellow + Reset + Reverse ]}Text@{[ Reset ]}");
