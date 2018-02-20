@@ -188,6 +188,11 @@ Here are the methods on `Term::Chrome` objects:
 
 See the warnings about `${}` and `&{}` above.
 
+# REFERENCES
+
+- ISO 6429 / ECMA 48: https://www.ecma-international.org/publications/files/ECMA-ST/Ecma-048.pdf (reference for SGR is at page 61, numbered 75 in PDF)
+- XTerm Control Sequences: http://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h2-Functions-using-CSI-\_-ordered-by-the-final-character\_s\_
+
 # SEE ALSO
 
 Comments on each modules are opinions of the author.
